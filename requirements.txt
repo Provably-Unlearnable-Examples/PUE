@@ -1,0 +1,17 @@
+matplotlib==3.7.1
+mlconfig==0.2.0
+numpy==1.24.3
+pandas==2.0.2
+Pillow==10.1.0
+psutil==5.9.0
+pystopwatch2==0.1.1
+ray==1.11.0
+scikit_learn==1.2.2
+scipy==1.11.4
+seaborn==0.11.2
+six==1.16.0
+torch==2.0.1
+torchensemble==0.1.9
+torchvision==0.15.2
+tqdm==4.65.0
+warmup_scheduler==0.3
