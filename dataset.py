@@ -78,7 +78,9 @@ transform_options = {
         "test_transform": [transforms.ToTensor()]},
 }
 transform_options['PoisonCIFAR10'] = transform_options['CIFAR10']
+transform_options['OPSCIFAR10'] = transform_options['CIFAR10']
 transform_options['PoisonCIFAR100'] = transform_options['CIFAR100']
+transform_options['OPSCIFAR100'] = transform_options['CIFAR100']
 transform_options['PoisonCIFAR101'] = transform_options['CIFAR100']
 transform_options['PoisonSVHN'] = transform_options['SVHN']
 transform_options['ImageNetMini'] = transform_options['ImageNet']
@@ -137,6 +139,15 @@ class DatasetGenerator():
                                           add_uniform_noise=add_uniform_noise,
                                           poison_classwise=poison_classwise,
                                           poison_classwise_idx=poison_classwise_idx)
+        elif train_data_type == 'OPSCIFAR10':
+            num_of_classes = 10
+            train_dataset = OPS_CIFAR10(root=train_data_path, transform=train_transform,
+                                        poison_rate=poison_rate, perturb_type=perturb_type,
+                                        patch_location=patch_location, seed=seed, img_denoise=img_denoise,
+                                        perturb_tensor_filepath=perturb_tensor_filepath,
+                                        add_uniform_noise=add_uniform_noise,
+                                        poison_classwise=poison_classwise,
+                                        poison_classwise_idx=poison_classwise_idx)
         elif train_data_type == 'CIFAR100':
             num_of_classes = 100
             train_dataset = datasets.CIFAR100(root=train_data_path, train=True,
@@ -148,7 +159,15 @@ class DatasetGenerator():
                                            patch_location=patch_location, seed=seed, img_denoise=img_denoise,
                                            perturb_tensor_filepath=perturb_tensor_filepath,
                                            add_uniform_noise=add_uniform_noise,
-                                           poison_classwise=poison_classwise)
+                                           poison_classwise=poison_classwise)       
+        elif train_data_type == 'OPSCIFAR100':
+            num_of_classes = 100
+            train_dataset = OPS_CIFAR100(root=train_data_path, transform=train_transform,
+                                         poison_rate=poison_rate, perturb_type=perturb_type,
+                                         patch_location=patch_location, seed=seed, img_denoise=img_denoise,
+                                         perturb_tensor_filepath=perturb_tensor_filepath,
+                                         add_uniform_noise=add_uniform_noise,
+                                         poison_classwise=poison_classwise)
         elif train_data_type == 'PoisonCIFAR101':
             num_of_classes = 101
             poison_cifar10 = PoisonCIFAR10(root=train_data_path, transform=train_transform,
@@ -1101,24 +1120,38 @@ class MixUp(Dataset):
     def __len__(self):
         return len(self.dataset)
 
+    
+class OPS_CIFAR10(datasets.CIFAR10):
+    def __init__(self, root, train=True, transform=None, target_transform=None,
+                 download=False, poison_rate=1.0, perturb_tensor_filepath=None,
+                 seed=0, perturb_type='classwise', patch_location='center', img_denoise=False,
+                 add_uniform_noise=False, poison_classwise=False, poison_classwise_idx=None):
+        super(OPS_CIFAR10, self).__init__(root=root, train=train, download=download, transform=transform, target_transform=target_transform)
 
-class SmoothedDataset(Dataset):
-    def __init__(self, dataset, sigma, rand_type):
-        self.dataset = dataset
-        self.data = dataset.data
-        self.targets = dataset.targets
-        self.sigma = sigma
+        self.data = self.data.astype(np.float32)
+        perturb = np.load(perturb_tensor_filepath)
+        self.perturb_tensor = torch.from_numpy(perturb)
+        self.perturb_tensor = self.perturb_tensor.mul(255).clamp_(0, 255).to('cpu').numpy()
 
-        data_shape = dataset[0][0].shape
-        if rand_type == 'gaussian':
-            self.perturbs = torch.FloatTensor(len(dataset), *data_shape).normal_(0, sigma)
-        elif rand_type == 'uniform':
-            self.perturbs = torch.FloatTensor(len(dataset), *data_shape).uniform_(0, sigma)
+        for idx in range(len(self.data)):
+            self.data[idx] = self.data[idx] + self.perturb_tensor[idx]
+            self.data[idx] = np.clip(self.data[idx], a_min=0, a_max=255)
+        self.data = self.data.astype(np.uint8)
 
-    def __len__(self,):
-        return len(self.dataset)
 
-    def __getitem__(self, i):
-        X, y = self.dataset[i]
-        X_new = X + self.perturbs[i]
-        return X_new, y
+class OPS_CIFAR100(datasets.CIFAR100):
+    def __init__(self, root, train=True, transform=None, target_transform=None,
+                 download=False, poison_rate=1.0, perturb_tensor_filepath=None,
+                 seed=0, perturb_type='classwise', patch_location='center', img_denoise=False,
+                 add_uniform_noise=False, poison_classwise=False):
+        super(OPS_CIFAR100, self).__init__(root=root, train=train, download=download, transform=transform, target_transform=target_transform)
+
+        self.data = self.data.astype(np.float32)
+        perturb = np.load(perturb_tensor_filepath)
+        self.perturb_tensor = torch.from_numpy(perturb)
+        self.perturb_tensor = self.perturb_tensor.mul(255).clamp_(0, 255).to('cpu').numpy()
+
+        for idx in range(len(self.data)):
+            self.data[idx] = self.data[idx] + self.perturb_tensor[idx]
+            self.data[idx] = np.clip(self.data[idx], a_min=0, a_max=255)
+        self.data = self.data.astype(np.uint8)
