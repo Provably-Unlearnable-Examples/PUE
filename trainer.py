@@ -176,7 +176,7 @@ class Trainer():
         for i, (images, labels) in enumerate(self.data_loader[self.target]):
             images, labels = images.to(device, non_blocking=True), labels.to(device, non_blocking=True)
             start = time.time()
-            log_payload = self.train_batch(images, labels, model, poison_model, origin_param, eta, optimizer)
+            log_payload = self.train_recovery_batch(images, labels, model, poison_model, origin_param, eta, optimizer)
             end = time.time()
             time_used = end - start
             if self.global_step % self.log_frequency == 0:
