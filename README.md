@@ -54,7 +54,7 @@ python certify.py --exp_name        ${exp_name} \
                   --N               ${N}
 ```
 
-**Extra Results on the Validity of the Certification**
+### Extra Results on the Validity of the Certification
 We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, batch loading orders, and data augmentations and record the weight distributions in ten layers drawn from each model. The results are demonstrated in the following figure.
 ![Figure1](./resources/layer-conv1.weight-weights-distributions.png)
 ![Figure2](./resources/layer-layer1.0.conv1.weight-weights-distributions.png)
@@ -66,6 +66,9 @@ We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, 
 ![Figure7](./resources/layer-layer4.0.conv1.weight-weights-distributions.png)
 ![Figure7](./resources/layer-layer4.1.conv1.weight-weights-distributions.png)
 ![Figure7](./resources/layer-linear.weight-weights-distributions.png)
+The converged weights from different runs have mean values around 0 and small variances, which suggests that the certified parameter set can maintain its coverage over classifier weights from different training runs with stochasticity. 
+The certified parameter set can effectively capture classifiers trained separately by adversaries following certain standard training procedures.
+
 
 **Acknowledgment**
 
