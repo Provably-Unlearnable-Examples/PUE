@@ -54,6 +54,19 @@ python certify.py --exp_name        ${exp_name} \
                   --N               ${N}
 ```
 
+**Extra Results on the Validity of the Certification**
+We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, batch loading orders, and data augmentations and record the weight distributions in ten layers drawn from each model. The results are demonstrated in the following figure.
+![Figure1](./resources/layer-conv1.weight-weights-distributions.png)
+![Figure2](./resources/layer-layer1.0.conv1.weight-weights-distributions.png)
+![Figure3](./resources/layer-layer1.1.conv1.weight-weights-distributions.png)
+![Figure4](./resources/layer-layer2.0.conv1.weight-weights-distributions.png)
+![Figure5](./resources/layer-layer2.1.conv1.weight-weights-distributions.png)
+![Figure6](./resources/layer-layer3.0.conv1.weight-weights-distributions.png)
+![Figure7](./resources/layer-layer3.1.conv1.weight-weights-distributions.png)
+![Figure7](./resources/layer-layer4.0.conv1.weight-weights-distributions.png)
+![Figure7](./resources/layer-layer4.1.conv1.weight-weights-distributions.png)
+![Figure7](./resources/layer-linear.weight-weights-distributions.png)
+
 **Acknowledgment**
 
 The code used in this work is inherited from the following repository:
