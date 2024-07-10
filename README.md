@@ -69,7 +69,7 @@ We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, 
 ![Figure7](./resources/layer-layer4.1.conv1.weight-weights-distributions.png)
 ![Figure7](./resources/layer-linear.weight-weights-distributions.png)
 The distribution of pairwise parameter difference across the ten ResNet-18 is as follows:
-![Figure8](./resources/Param-diff-distribution.png =250x)
+![Figure8](./resources/Param-diff-distribution.png =200x200)
 The converged weights from different stochastic training runs have a mean parameter difference of $-4.92\times 10^{-6}$ and an STD of $0.01$, 
 Since the certified parameter set with $\sigma=0.25$ and $\eta=1.0$ has sufficiently large probability mass within $[\hat{\theta}-0.5, \hat{\theta}+0.5]$ ($\hat{\theta}$ is the set of parameters of the surrogate), the results suggest that the certified parameter set verified using one of these models as a surrogate can maintain its coverage over classifier weights from other training runs with stochasticity. 
 The certified parameter set can effectively capture classifiers trained separately by adversaries following certain standard training procedures.
