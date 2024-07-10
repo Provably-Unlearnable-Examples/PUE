@@ -57,7 +57,8 @@ python certify.py --exp_name        ${exp_name} \
 ---
 
 ## Extra Results on the Validity of the Certification
-We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, batch loading orders, and data augmentations and record the weight distributions in ten layers drawn from each model. The results are demonstrated in the following figure.
+We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, batch loading orders, and data augmentations, and record the weight distributions in ten layers drawn from each model. The results are demonstrated in the following figure. Each row contains the parameter distributions of the same layer from the 10 ResNet-18 models.
+
 ![Figure1](./resources/layer-conv1.weight-weights-distributions.png)
 ![Figure2](./resources/layer-layer1.0.conv1.weight-weights-distributions.png)
 ![Figure3](./resources/layer-layer1.1.conv1.weight-weights-distributions.png)
