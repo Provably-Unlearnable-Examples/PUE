@@ -68,7 +68,7 @@ We train 10 ResNet-18 models on CIFAR10 PUEs with random weight initialization, 
 ![Figure7](./resources/layer-layer4.0.conv1.weight-weights-distributions.png)
 ![Figure7](./resources/layer-layer4.1.conv1.weight-weights-distributions.png)
 ![Figure7](./resources/layer-linear.weight-weights-distributions.png)
-The converged weights from different runs have mean values around 0 and small variances, which suggests that the certified parameter set can maintain its coverage over classifier weights from different training runs with stochasticity. 
+The converged weights from different runs have mean values around 0 and small differences in the variances, which suggests that the certified parameter set verified by using one of these models as a surrogate can maintain its coverage over classifier weights from other training runs with stochasticity. 
 The certified parameter set can effectively capture classifiers trained separately by adversaries following certain standard training procedures.
 
 ---
