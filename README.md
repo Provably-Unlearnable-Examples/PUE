@@ -1,4 +1,4 @@
-## The code of the paper "Provably Unlearnable Examples"
+## The code of the paper "Provably Unlearnable Data Examples"
 
 **Launch a recovery attack against a classifier trained on PAP noise**
 
